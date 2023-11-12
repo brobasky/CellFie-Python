@@ -131,6 +131,10 @@ def CellFie(data,SampleNumber,ref,param, pathway, sampNames):
         if param['LocalThresholdType'] == 'mean':
             # The threshold for each gene is equal to its mean value over all the samples
             threshold = np.mean(data['value'], axis=1)
+            #handling future divide by zero errors to produce the same result as matlab code
+            #does not produce the exact same scores but very close
+            threshold[threshold==0.0] = 1e-100
+            
         else:
             threshold = np.empty(len(data['gene']), dtype=float)
             for i in range(len(data['gene'])):
